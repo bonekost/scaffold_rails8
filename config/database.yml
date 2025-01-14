@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: apoint_development
+
+test:
+  <<: *default
+  database: apoint_test
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: apoint_production
+    username: apoint
+    password: <%= ENV["APOINT_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: apoint_production_cache
+    migrations_paths: db/cache_migrate
